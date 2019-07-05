@@ -21,9 +21,11 @@ const createLintingRule = () => ({
 
 module.exports = {
   context: path.resolve(__dirname, '../'),
+  // 入口文件
   entry: {
     app: './src/main.js'
   },
+  // 出口文件
   output: {
     path: config.build.assetsRoot,
     filename: '[name].js',
@@ -31,6 +33,7 @@ module.exports = {
       ? config.build.assetsPublicPath
       : config.dev.assetsPublicPath
   },
+  // 其他解决方案配置
   resolve: {
     extensions: ['.js', '.vue', '.json'],
     alias: {
@@ -39,6 +42,7 @@ module.exports = {
     }
   },
   module: {
+    // 加载器配置
     rules: [
       ...(config.dev.useEslint ? [createLintingRule()] : []),
       {

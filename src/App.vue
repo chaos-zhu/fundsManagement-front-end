@@ -12,7 +12,10 @@ export default {
 
 <style lang='scss'>
 html,
-body,
+body{
+  background: linear-gradient(90deg, rgb(10, 164, 199), rgb(25, 213, 253));
+  overflow: hidden;
+}
 #app {
   height: 100%;
   width: 100%;
