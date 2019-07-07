@@ -1,7 +1,7 @@
 <template>
   <div class="login">
       <h2 class="logo">
-          imglogo
+         <img src='@/assets/logo.png' />
       </h2>
     <el-card shadow="hover">
       <el-form
@@ -76,8 +76,9 @@ export default {
       width: 1000px;
       position: absolute;
       top:-150px;
-      left: -250px;
-      background-color: #dddddd;
+      left: -300px;
+      text-align: center;
+    //   background-color: #dddddd;
   }
 }
 </style>
