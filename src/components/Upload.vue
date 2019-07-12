@@ -8,13 +8,14 @@
         :multiple="false"
         :limit='1'
         :on-exceed='onExceed'
+        :on-change="addFile"
         :action="uploadUrl"
         :auto-upload="false"
         :http-request="request"
         :show-file-list="true">
         <el-button
             slot="trigger"
-            size="small"
+            size="mini"
             type="primary"
             :loading="uploadLoading"
         >
@@ -27,6 +28,7 @@
 <script>
 export default {
   name: "Uplaod",
+  props: ['picOk'],
   data() {
     return {
         uploadLoading: false,
@@ -37,9 +39,8 @@ export default {
       this.$emit('getUploadRef', this.$refs.upload)
   },
   methods: {
-        // this.$refs.upload.submit()
-    async request(option) {
-        console.log(option.file)
+    request(option) {
+        console.log('submit')
         const formData = new FormData()
         formData.append('file',option.file)
         this.$emit('getFileData', formData)
@@ -54,17 +55,22 @@ export default {
             center: true
         })
     },
-    beforeAvatarUpload(file) {
-        const isJPG = file.type === 'image/jpeg';
-        const isLt2M = file.size / 1024 / 1024 < 2;
-
+    addFile(file, fileList) {
+        console.log('changeFile')
+        const isJPG = file.raw.type === 'image/jpeg' || file.raw.type === 'image/png'
+        const isLt2M = file.size / 1024 / 1024 < 2
         if (!isJPG) {
-            this.$message.error('上传头像图片只能是 JPG 格式!');
+            this.$emit('update: picOk', false)
+            this.$message.error('上传头像图片只能是 JPG 或者 PNG 格式!')
+            return false
         }
         if (!isLt2M) {
-            this.$message.error('上传头像图片大小不能超过 2MB!');
+            this.$emit('update: picOk', false)
+            this.$message.error('上传头像图片大小不能超过 2MB!')
+            return false
         }
-        return isJPG && isLt2M;
+        this.$emit('update:picOk', true)
+        return true
     }
   }
 };

@@ -1,84 +1,108 @@
 <template>
-  <div class="login">
-      <h2 class="logo">
-         <img src='@/assets/logo.png' />
-      </h2>
-    <el-card shadow="hover">
-      <el-form
-        :model="loginFormData"
-        label-width="60px"
-        :rules='rules'
-        ref="loginForm">
-        <el-row type="flex">
+  <div class="login-container">
+    <h2 class="logo">
+      <img src="@/assets/loginLogo.png" />
+    </h2>
+    <div class="login">
+      <el-card shadow="hover">
+        <el-form :model="loginFormData" label-width="60px" :rules="rules" ref="loginForm">
+          <el-row type="flex">
             <el-col :span="23">
-                <el-form-item prop="email" label="邮箱">
-                    <el-input v-model="loginFormData.email"></el-input>
-                </el-form-item>
+              <el-form-item prop="email" label="邮箱">
+                <el-input v-model="loginFormData.email"></el-input>
+              </el-form-item>
             </el-col>
-        </el-row>
-        <el-row type="flex">
+          </el-row>
+          <el-row type="flex">
             <el-col :span="23">
-                <el-form-item prop="password" label='密码'>
-                    <el-input type='password' v-model="loginFormData.password"></el-input>
-                </el-form-item>
+              <el-form-item prop="password" label="密码">
+                <el-input type="password" v-model="loginFormData.password"></el-input>
+              </el-form-item>
             </el-col>
-        </el-row>
-        <el-row type="flex">
+          </el-row>
+          <el-row type="flex">
             <el-col :span="20" :push="7">
-                <el-form-item>
-                    <el-button type="primary" size='small' @click="submitForm">登录</el-button>
-                </el-form-item>
+              <el-form-item>
+                <el-button type="primary" size="small" @click="submitForm">登录</el-button>
+              </el-form-item>
             </el-col>
-        </el-row>
-        <el-row type="flex">
-            <el-col :span="20" :push="18" style="font-size: 12px;">
-                还没账号？ <router-link to="/register" tag="a" style="font-size: 14px;color: #11155d;">去注册</router-link>
+          </el-row>
+          <el-row type="flex">
+            <el-col :span="18" style="font-size: 12px;margin-bottom: 15px">
+							<p style="position: absolute;right: 0">
+								还没账号？
+              	<router-link to="/register" tag="a" style="font-size: 14px;color: #11155d">去注册</router-link>
+							</p>
             </el-col>
-        </el-row>
-      </el-form>
-    </el-card>
+          </el-row>
+        </el-form>
+      </el-card>
+    </div>
   </div>
 </template>
 
 <script>
+import { $loading } from '@/utils/tool.js'
 export default {
   name: "Login",
   data() {
-      return {
-          loginFormData: {
-              email: '',
-              password: ''
-          },
-          rules: {
-            email: [{ required: true, message: '请输入邮箱地址', trigger: 'blur' }, { type: 'email', message: '请输入正确的邮箱地址', trigger: ['blur', 'change'] }],
-            password: [{ required: true, message: '密码不能为空', trigger: 'blur' }, { min: 6, max: 12, message: '密码长度在6~12位之间'}]
-        }
+    return {
+      loginFormData: {
+        email: "",
+        password: ""
+      },
+      rules: {
+        email: [
+          { required: true, message: "请输入邮箱地址", trigger: "blur" },
+          {
+            type: "email",
+            message: "请输入正确的邮箱地址",
+            trigger: ["blur", "change"]
+          }
+        ],
+        password: [
+          { required: true, message: "密码不能为空", trigger: "blur" },
+          { min: 6, max: 12, message: "密码长度在6~12位之间" }
+        ]
       }
-  },
+    }
+	},
   methods: {
-      submitForm() {
-          this.$refs.loginForm.validate((isOk) => {
-              console.log(isOk)
-          })
-      }
-  },
-};
+    submitForm() {
+      this.$refs.loginForm.validate(isOk => {
+				if(!isOk) return this.$message({type: 'error', message: '表单校验失败!', center: true})
+				let loading = $loading()
+				let url = '/api/users/login'
+				let { email, password } = this.loginFormData
+				this.$axios.post(url, {email, password})
+						.then(({ data }) => {
+              loading.close()
+							if(data.code === -1) return this.$message({type: 'error', message: data.msg, center: true})
+							this.$message({type: 'success', message: '登录成功😊', center: true})
+							console.log(data)
+              let {userInfo, token } = data.data
+							localStorage.setItem('userInfo', JSON.stringify(userInfo))
+							localStorage.setItem('token', JSON.stringify(token))
+							this.$router.push('/')
+						})
+      })
+    }
+  }
+}
 </script>
 
 <style lang='scss' scoped>
-.login {
-  width:25%;
-  margin: 30vh auto;
-  position: relative;
-  padding-right: 20px;
-  .logo{
-      height: 100px;
-      width: 1000px;
-      position: absolute;
-      top:-150px;
-      left: -300px;
-      text-align: center;
-    //   background-color: #dddddd;
-  }
+.login-container{
+	.logo {
+		height: 100px;
+		text-align: center;
+		margin-top: 3%;
+	}
+	.login {
+		width: 28%;
+		margin: 10vh auto;
+		position: relative;
+		padding-right: 20px;
+	}
 }
 </style>

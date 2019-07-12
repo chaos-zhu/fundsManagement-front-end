@@ -5,16 +5,38 @@ Vue.use(Router)
 const Index = () => import('@/page/Index.vue')
 const Login = () => import('@/page/Login.vue')
 const Register = () => import('@/page/Register.vue')
+const Home = () => import('@/page/main/Home.vue')
+const CapitalFlow = () => import('@/page/main/CapitalFlow.vue')
+const AccountSetting = () => import('@/page/main/AccountSetting.vue')
+const ExpenditureTrend = () => import('@/page/main/ExpenditureTrend.vue')
 const NotFound = () => import('@/page/NotFound.vue')
 
-export default new Router({
+let router = new Router({
   mode: 'history',
   // base: '/funds-management/',
   routes: [
     {
       path: '/',
-      name: 'index',
-      component: Index
+      component: Index,
+      redirect: '/index',
+      children: [
+        {
+          path: '/index',
+          component: Home
+        },
+        {
+          path: '/capital-flow',
+          component: CapitalFlow
+        },
+        {
+          path: '/account-settings',
+          component: AccountSetting
+        },
+        {
+          path: '/expenditure-trend',
+          component: ExpenditureTrend
+        }
+      ]
     },
     {
       path: '/login',
@@ -30,6 +52,18 @@ export default new Router({
       path: '/404',
       name: '404',
       component: NotFound
+    },
+    {
+      path: '*',
+      redirect: '/'
     }
   ]
 })
+
+router.beforeEach((to, form, next) => {
+  console.log(to)
+  console.log(form)
+  next()
+})
+
+export default router

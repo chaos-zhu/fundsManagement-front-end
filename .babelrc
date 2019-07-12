@@ -11,11 +11,11 @@
       "modules": false
     }]
   ],
-  "plugins": ["transform-vue-jsx", "transform-runtime", [
-    "component",
-    {
-      "libraryName": "element-ui",
-      "styleLibraryName": "theme-chalk"
-    }
-  ]]
+  // "plugins": ["transform-vue-jsx", "transform-runtime", [
+  //   "component",
+  //   {
+  //     "libraryName": "element-ui",
+  //     "styleLibraryName": "theme-chalk"
+  //   }
+  // ]]
 }

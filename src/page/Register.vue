@@ -25,22 +25,24 @@
         </el-row>
         <el-row type="flex">
           <el-col :span="23">
-            <el-form-item label="头像" :rules="rules.passwordRule">
-              <upload @getUploadRef="getUploadRef" @getFileData="getFileData" />
+            <el-form-item label="头像">
+              <upload :picOk.sync='picOk' @getUploadRef="getUploadRef" @getFileData="getFileData" />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row type="flex">
           <el-col :span="20" :push="7">
             <el-form-item>
-              <el-button type="primary" size="small" @click="submitForm">登录</el-button>
+              <el-button type="primary" size="mini" @click="submitForm">立即注册</el-button>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row type="flex">
-          <el-col :span="20" :push="18" style="font-size: 12px">
-            已有账号？
-            <router-link to="/login" tag="a" style="font-size: 14pxcolor: #11155d">去登录</router-link>
+          <el-col :span="18" style="font-size: 12px;margin-bottom: 15px;">
+							<p style="position: absolute;right: 0;">
+								已有账号？
+              	<router-link to="/login" tag="a" style="font-size: 14px;color: #11155d;">去登录</router-link>
+							</p>
           </el-col>
         </el-row>
       </el-form>
@@ -50,6 +52,7 @@
 
 <script>
 import Upload from "@/components/Upload.vue"
+import { $loading } from '@/utils/tool.js'
 export default {
   name: "Login",
   components: {
@@ -59,6 +62,7 @@ export default {
     return {
       formData: null,
       uploadRef: null,
+      picOk: false,
       registerFormData: {
         userName: "",
         email: "",
@@ -66,7 +70,7 @@ export default {
         avatar: null
       },
       rules: {
-        userName: { required: true, message: "请输入用户名", trigger: "blur" },
+        userName: [{ required: true, message: "请输入用户名", trigger: "blur" }, {min: 2, max: 5, message: '用户名长度在2到5位之间'}],
         email: [
           { required: true, message: "请输入邮箱地址", trigger: "blur" },
           {
@@ -85,24 +89,26 @@ export default {
   methods: {
     submitForm() {
       this.$refs.loginForm.validate(isOk => {
-        if (isOk) {
-          this.uploadRef.submit()
-          let { userName, email, password } = this.registerFormData
-          let url = '/api/users/register'
-          this.formData.append('name', userName)
-          this.formData.append('email', email)
-          this.formData.append('password', password)
-          this.axios.post(url, this.formData)
-                .then(({data}) => {
-                  console.log(data)
+        this.uploadRef.submit()
+        if(!isOk) return this.$message({ type: 'error', message: '缺少必填项', center: true })
+        if(!this.picOk) return this.$message({type: 'error', message: '头像图片错误', center: true})
+        let loading = $loading()
+        let { userName, email, password } = this.registerFormData
+        let url = '/api/users/register'
+        this.formData.append('name', userName)
+        this.formData.append('email', email)
+        this.formData.append('password', password)
+        this.$axios.post(url, this.formData)
+              .then(({data}) => {
+                if(data.code === -1) return this.$message({ type: 'error', message: data.msg, center: true })
+                this.$message({
+                  type: 'success',
+                  message: '注册成功,请登录',
+                  center: true
                 })
-        } else {
-          this.$message({
-            type: 'error',
-            message: '缺少必填项',
-            center: true
-          })
-        }
+                this.$router.push('/login')
+                loading.close()
+              })
       })
     },
     getUploadRef(ref) {
