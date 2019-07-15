@@ -1,7 +1,11 @@
 <template>
-  <div class="navmenu-container">
+  <div :class="['navmenu-container', {'hide-nav-menu': !navSwitch}]">
+    <div class="navmenu-switch" @click="handleNavSwitch">
+      <i :class="{'el-icon-d-arrow-left': navSwitch}"></i>
+      <i :class="{'el-icon-d-arrow-right': !navSwitch}"></i>
+    </div>
     <el-menu
-      default-active="/"
+      :default-active="curMenu"
       class="el-menu-vertical-demo"
       @select="handleSelect"
       background-color="#545c64"
@@ -29,25 +33,76 @@
 
 <script>
 export default {
-	name: "Navmenu",
+  name: "Navmenu",
+  props: {
+    navStatus: {
+      required: true,
+      type: Boolean
+    }
+  },
 	data() {
 		return {
-			
+      curMenu: '/',
+      navSwitch: true
 		}
-	},
+  },
+  watch: {
+    '$route': function (newValue) { 
+      console.log(newValue) 
+       this.curMenu = newValue.path
+    }
+    
+  },
+  beforeCreate() {
+    // console.log(this.curMenu) // undefined 在这个生命周期中初始化data、watch、computer、methods等，但是还拿不到
+  },
+  mounted() {
+    // 还是拿不到路由$route
+    // this.$nextTick(() => {
+    //   console.log(this.$route)
+    //   this.curMenu = this.$route.path
+    // })
+  },
 	methods: {
 		handleSelect (item) {
+      this.curMenu = item
 			this.$router.push(item)
-		}
-	},
+    },
+    handleNavSwitch () {
+      this.navSwitch = !this.navSwitch
+      this.$emit('update:navStatus', this.navSwitch)
+    }
+	}
 }
 </script>
 
 <style lang="scss" scope>
 .navmenu-container {
   width: 10%;
-  height: 100%;
+  height: calc(100vh - 72px);
   background-color: #2d374f;
   opacity: 0.93;
+  float: left;
+  transition: 0.5s;
+  position: relative;
+  .navmenu-switch{
+    position: absolute;
+    right: -30px;
+    top: 45vh;
+    z-index: 9;
+    height: 30px;
+    line-height: 30px;
+    width: 35px;
+    font-size: 25px;
+    text-align: center;
+    transition: 0.5s;
+    background-color: rgba(0, 0, 0, 0.2);
+    i{
+      color: white;
+    }
+  }
+}
+.hide-nav-menu{
+  margin-left: -10%;
 }
 </style>

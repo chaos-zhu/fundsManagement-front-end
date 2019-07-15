@@ -42,7 +42,7 @@
 </template>
 
 <script>
-import { $loading } from '@/utils/tool.js'
+// import { $loading } from '@/utils/tool.js'
 export default {
   name: "Login",
   data() {
@@ -71,7 +71,7 @@ export default {
     submitForm() {
       this.$refs.loginForm.validate(isOk => {
 				if(!isOk) return this.$message({type: 'error', message: '表单校验失败!', center: true})
-				let loading = $loading()
+				let loading = this.$loading({fullscreen: true, text: '疯狂加载中...', background: 'rgba(0, 0, 0, 0.5)'})
 				let url = '/api/users/login'
 				let { email, password } = this.loginFormData
 				this.$axios.post(url, {email, password})
@@ -83,7 +83,7 @@ export default {
               let {userInfo, token } = data.data
 							localStorage.setItem('userInfo', JSON.stringify(userInfo))
 							localStorage.setItem('token', JSON.stringify(token))
-							this.$router.push('/')
+							this.$router.push('/index')
 						})
       })
     }
