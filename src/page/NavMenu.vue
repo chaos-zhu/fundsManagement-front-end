@@ -48,7 +48,7 @@ export default {
   },
   watch: {
     '$route': function (newValue) { 
-      console.log(newValue) 
+      // console.log(newValue)
        this.curMenu = newValue.path
     }
     
