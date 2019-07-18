@@ -113,8 +113,10 @@
         align='center'
         width="150">
         <template slot-scope="scope">
-          <el-button v-if="scope.row.file" size="mini" type="info" @click="seeFile(scope.row.file)">查看</el-button>
-          <span v-else style="color: gray;">无</span>
+          <el-tooltip class="item" effect="dark" :content="scope.row.fileName" placement="left">
+            <el-button v-if="scope.row.filePath" size="mini" type="info" @click="downloadFile(scope.row._id, scope.row.fileName)">下载</el-button>
+          </el-tooltip>
+            <span v-if="!scope.row.filePath" style="color: gray;">无</span>
         </template>
       </el-table-column>
       <el-table-column label="操作" align='center' width="150">
@@ -136,7 +138,7 @@
       @current-change="handleCurrentChange"
       :current-page.sync="pageNum"
       :page-size="pageSize"
-      layout="prev, pager, next, jumper"
+      layout="total, prev, pager, next, jumper"
       :total="totalNum">
     </el-pagination>
 
@@ -182,13 +184,12 @@
         <el-row>
           <el-col :span="24">
             <el-form-item label="附件上传">   
-              <!-- <el-upload
+              <el-upload
                 ref="upload"
                 :multiple="false"
                 :limit='1'
                 :on-exceed='onExceed'
-                :on-change="addFile"
-                :action="uploadUrl"
+                :action="'随便'"
                 :auto-upload="false"
                 :http-request="request"
                 :show-file-list="true">
@@ -196,9 +197,8 @@
                     slot="trigger"
                     size="mini"
                     type="primary"
-                    :loading="uploadLoading">选取文件
-                </el-button><br/>
-              </el-upload> -->
+                    :loading="uploadLoading">选取文件</el-button><br/>
+              </el-upload>
             </el-form-item>
           </el-col>
         </el-row>
@@ -270,6 +270,7 @@ export default {
     data () {
       return {
         loading: false,
+        uploadLoading: false,
         addFormVisible: false,
         updateFormVisible: false,
         addForm: {
@@ -371,24 +372,34 @@ export default {
         this.getRecordList(Object.assign({}, searchForm))
         return searchForm
       },
+      // 文件超过限制则提示
+      onExceed() {
+        this.$message({ type: 'error',  message: '失败：最多只能添加一张图片', center: true })
+      },
+      // 自定义文件上传，调用this.$refs.upload.submit()方法即可触发，如未选择文件，此方法不会被触发
+      request(option) {
+        // console.log('submit')
+        // console.log(option)
+        this.addForm.file = option.file
+      },
       // 新增
       addRecord () {
         this.$refs.addForm.validate((isOk) => {
           if(!isOk) return this.$message({type: 'error', message: '新增失败!请填写表单', center: true})
+          this.$refs.upload.submit() // 调用自定义上传方法request
           let addForm = JSON.parse(JSON.stringify(this.addForm))
-          console.log(addForm)
-          let { type, mode, reason,explain,file } = addForm
+          let { type, mode, reason, explain } = addForm
           let url = '/api/funds/add'
           let formData = new FormData()
           if(typeof(addForm.type) === 'number') formData.append('type', type)
           if(typeof(addForm.mode) === 'number') formData.append('mode', mode)
           if(addForm.reason) formData.append('reason', reason[reason.length-1])
           if(addForm.explain) formData.append('explain', explain)
-          if(addForm.file) formData.append('file', file)
+          if(addForm.file) formData.append('file', this.addForm.file) // 文件单独处理
+          this.addForm.file = null // 无论有没有上传文件，应该还原
           this.$axios.post(url, formData)
             .then(({data}) => {
-              if(data.code) this.$message.error('新增失败:' + data)
-              console.log(data)
+              if(data.code || data.code === 401) this.$message.error('新增失败:' + data)
               this.$message.success({message: '新增成功!', center: true})
               this.addFormVisible = false
               this.getRecordList() // 新增成功后重新请求数据
@@ -454,14 +465,13 @@ export default {
       },
       // 修改前
       handleEdit (info) {
-        console.log(info)
         this.updateFormVisible = true
         let reason, curReason = []
-        if(info.type === '支出') {
+        if(info.type === '收入') {
           reason = this.reasonArr[0].children
           curReason[0] = "1"
         }
-        if(info.type === '收入') {
+        if(info.type === '支出') {
           reason = this.reasonArr[1].children
           curReason[0] = "2"
         }
@@ -503,9 +513,20 @@ export default {
             console.log(err)
           })
       },
-      seeFile (file) {
-        console.log(file)
-        window.open('//localhost:8000/public/funds-appendix/1562921057079%E4%B8%AD%E6%96%87%E6%B5%8B%E8%AF%95.jpg')
+      // 处理文件下载
+      downloadFile (id, fileName) {
+        let url = `/api/funds/recordFile`
+        this.$axios.get(url, { params: {id}, responseType: "arraybuffer"} ) // 指定响应类型：arraybuffer或blob（这里两种都可以使用，原因未知，路过的大佬求告知），如果不写下载的文件会乱码
+          .then(({data}) => {
+            let contentUrl = window.URL.createObjectURL(new Blob([data])) // params：object 可选: File对象、Blob对象、MediaSource对象。
+            let link = document.createElement('a')
+            link.style.display = 'none'
+            link.href = contentUrl
+            link.setAttribute('download', fileName) // 文件名称
+            document.body.appendChild(link)
+            link.click()
+            window.URL.revokeObjectURL(contentUrl)
+          })
       },
       // 换页
       handleCurrentChange (pageNum) {
@@ -525,13 +546,13 @@ export default {
             let reason = [
               {
                 value: '1',
-                label: '支出',
-                children: reasonData.expenditure
+                label: '收入',
+                children: reasonData.income
               },
               {
                 value: '2',
-                label: '收入',
-                children: reasonData.income
+                label: '支出',
+                children: reasonData.expenditure
               }
             ]
             this.reasonArr = reason

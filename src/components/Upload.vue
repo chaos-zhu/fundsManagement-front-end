@@ -32,7 +32,7 @@ export default {
   data() {
     return {
         uploadLoading: false,
-        uploadUrl: 'http://fsdafds'
+        uploadUrl: 'http://必传递的props,任意字符串即可'
     };
   },
   mounted() {
