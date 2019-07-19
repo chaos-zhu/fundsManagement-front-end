@@ -1,9 +1,12 @@
 <template>
   <el-card>
     <div class="home">
+      <h2 class="title" @click="handleTest">{{getUserInfo.name}} 欢迎使用XXXX系统</h2>
       <swiper :options="swiperOption" class="swiper-container">
-        <swiper-slide class="swiper-item"><img src="@/assets/img/1.jpeg" alt="图片不见了"></swiper-slide>
-        <swiper-slide class="swiper-item"><img src="@/assets/img/2.jpeg" alt="图片不见了"></swiper-slide>
+        <swiper-slide class="swiper-item"><img src="@/assets/img/01-min.jpg" alt="图片不见了"></swiper-slide>
+        <swiper-slide class="swiper-item"><img src="@/assets/img/02-min.jpg" alt="图片不见了"></swiper-slide>
+        <swiper-slide class="swiper-item"><img src="@/assets/img/03-min.jpg" alt="图片不见了"></swiper-slide>
+        <swiper-slide class="swiper-item"><img src="@/assets/img/04-min.jpg" alt="图片不见了"></swiper-slide>
         <div class="swiper-pagination" slot="pagination"></div>
       </swiper>
       <div class="hr"></div>
@@ -13,7 +16,7 @@
             <h2>系统简介</h2>
             <p>
               为了熟练掌握学习的知识点而开发的demo.<br><br>
-              可以记录个人资金消费的记录以及图文展示资金的消费趋势.
+              功能：可以记录个人资金消费的记录以及图文展示资金的消费趋势.
             </p>
           </div>
           <div class="part">
@@ -56,6 +59,7 @@
 
 <script>
 import { swiper, swiperSlide } from "vue-awesome-swiper";
+import { mapState, mapGetters, mapMutations, mapActions } from 'vuex'
 require("swiper/dist/css/swiper.css");
 export default {
   name: "Home",
@@ -75,17 +79,44 @@ export default {
           clickable: true
         }
       }
-    };
+    }
   },
-  methods: {}
+  computed: {
+    // ...mapState({userInfo: state => state.userInfo}),  // mapState 写法更麻烦，推荐使用mapGetters
+    ...mapGetters(['getUserInfo']),
+  },
+  methods: {
+    ...mapActions(['changeUserName']), // 使用辅助函数直接将actions和mutations里的方法映射过来，直接调用和传递参数(尝试后只能传递一个)
+    ...mapMutations(['handleUserName']),
+    handleTest () {
+      this.$store.dispatch('changeUserName', 123)
+      // this.$store.commit('handleUserName', 123)
+      // this.changeUserName(123, 456) // 第二个传值为undefined
+      // this.handleUserName(123, 456)
+    }
+  }
 };
 </script>
 
 <style lang="scss" scoped>
 .home {
   display: flex;
+  position: relative;
+  .title{
+    position: absolute;
+    top: 30px;
+    margin-left: 30px;
+    font-size: 35px;
+    // font-style: oblique; // 下划线
+    letter-spacing: 3px;
+    text-shadow: 3px 3px 6px gray;
+    background: linear-gradient(to right, red, blue); // 简写，其实是给background-image 设置为渐变色，不是 background-color
+    -webkit-background-clip: text; // 只留下文本的背景区域(存在严重的兼容问题)
+    color: transparent;  // 让文字为透明色，就是让后面背景色显示出来。
+  }
   .swiper-container {
-    margin: 150px 15px 0 0;;
+    margin-top: 120px;
+    margin-right: 15px;
     width: 60%;
     height: 50vh;
     float: left;
@@ -117,12 +148,18 @@ export default {
       min-height: 100px;
       h2{
         font-size: 18px;
+        color: #6FBDFB;
         text-shadow: 1px 1px 1px gray;
+        font-weight: 500;
       }
       p{
         margin: 15px 15px;
         font-size: 17px;
         color: gray;
+        span{
+          font-size: 17px;
+          text-shadow: 1px 1px 1px gray;
+        }
       }
     }
   }

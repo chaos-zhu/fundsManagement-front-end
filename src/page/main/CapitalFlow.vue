@@ -113,7 +113,7 @@
         align='center'
         width="150">
         <template slot-scope="scope">
-          <el-tooltip class="item" effect="dark" :content="scope.row.fileName" placement="left">
+          <el-tooltip class="item" effect="dark" :content="scope.row.fileName ? scope.row.fileName.slice(14) : ''" placement="left">
             <el-button v-if="scope.row.filePath" size="mini" type="info" @click="downloadFile(scope.row._id, scope.row.fileName)">下载</el-button>
           </el-tooltip>
             <span v-if="!scope.row.filePath" style="color: gray;">无</span>
@@ -396,7 +396,7 @@ export default {
           if(addForm.reason) formData.append('reason', reason[reason.length-1])
           if(addForm.explain) formData.append('explain', explain)
           if(addForm.file) formData.append('file', this.addForm.file) // 文件单独处理
-          this.addForm.file = null // 无论有没有上传文件，应该还原
+          this.addForm.file = null // 无论有没有上传文件，应该释放原变量中的file对象
           this.$axios.post(url, formData)
             .then(({data}) => {
               if(data.code || data.code === 401) this.$message.error('新增失败:' + data)
@@ -522,7 +522,7 @@ export default {
             let link = document.createElement('a')
             link.style.display = 'none'
             link.href = contentUrl
-            link.setAttribute('download', fileName) // 文件名称
+            link.setAttribute('download', fileName.slice(14)) // 文件名称
             document.body.appendChild(link)
             link.click()
             window.URL.revokeObjectURL(contentUrl)

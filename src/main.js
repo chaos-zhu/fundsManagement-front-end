@@ -3,6 +3,7 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
+import store from './store/'
 import '@/assets/css/reset.css'
 import '@/assets/css/common.scss'
 // import vueSwiper from 'vue-awesome-swiper'
@@ -22,6 +23,7 @@ Vue.config.productionTip = false
 export default new Vue({
   el: '#app',
   router,
+  store,
   components: { App },
   template: '<App/>'
 })

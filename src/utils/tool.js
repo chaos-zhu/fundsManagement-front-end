@@ -14,3 +14,15 @@ export function formatTime (ms) {
   const s = date.getSeconds() // 秒
   return `${y}年${M}月${d}日${h}时${m}分${s}秒`
 }
+
+// 简单的防抖函数
+// 用处：当持续触发事件时(窗口的resize、scroll，输入框内容校验)，一定时间段内再触发事件
+// 概念：在事件被触发n秒后再执行回调，如果在这n秒内又被触发，则重新计时。
+// 原理：使用闭包 + timeout
+export function debounce (fn, wait) {
+  let timeout = null
+  return function () {
+    if (timeout !== null) clearTimeout(timeout)
+    timeout = setTimeout(fn, wait)
+  }
+}

@@ -66,7 +66,10 @@ export default {
         ]
       }
     }
-	},
+  },
+  mounted() {
+    // this.$message({ type: 'info', message: `欢迎登录`, center: true })
+  },
   methods: {
     submitForm() {
       this.$refs.loginForm.validate(isOk => {
@@ -79,11 +82,12 @@ export default {
               loading.close()
 							if(data.code === -1) return this.$message({type: 'error', message: data.msg, center: true})
 							this.$message({type: 'success', message: '登录成功😊', center: true})
-							console.log(data)
+              // console.log(data)
+              // this.$store.commit('setLoginStatus', true)
               let {userInfo, token } = data.data
 							localStorage.setItem('userInfo', JSON.stringify(userInfo))
 							localStorage.setItem('token', JSON.stringify(token))
-							this.$router.push('/index')
+							this.$router.push('/')
 						})
       })
     }

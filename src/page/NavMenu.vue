@@ -5,13 +5,13 @@
       <i :class="{'el-icon-d-arrow-right': !navSwitch}"></i>
     </div>
     <el-menu
-      :default-active="curMenu"
+      :default-active="getPath"
       class="el-menu-vertical-demo"
       @select="handleSelect"
       background-color="#545c64"
       text-color="#fff"
       active-text-color="#ffd04b" >
-      <el-menu-item index="/">
+      <el-menu-item index="/home">
         <i class="el-icon-menu"></i>
         <span slot="title">首页</span>
       </el-menu-item>
@@ -42,19 +42,26 @@ export default {
   },
 	data() {
 		return {
-      curMenu: '/',
+      curMenu: '/home',
       navSwitch: true
 		}
   },
   watch: {
-    '$route': function (newValue) { 
-      // console.log(newValue)
-       this.curMenu = newValue.path
+    // '$route': {
+    //   hander: function (newValue) { 
+    //     console.log(newValue)
+    //     this.curMenu = newValue.path
+    //   },
+    //    immediate: true // 报错，$route不能以对象的形式来进行首次或者深度监听
+    // }
+  },
+  computed: {
+    getPath (newVal) {
+      return this.$route.path
     }
-    
   },
   beforeCreate() {
-    // console.log(this.curMenu) // undefined 在这个生命周期中初始化data、watch、computer、methods等，但是还拿不到
+    // console.log(this.navSwitch) // undefined 在这个生命周期中初始化data、watch、computer、methods等，但是还拿不到
   },
   mounted() {
     // 还是拿不到路由$route
