@@ -1,58 +1,59 @@
 <template>
-  <div class="login">
-    <el-card shadow="hover">
-      <el-form :model="registerFormData" :rules="rules" label-width="70px" ref="loginForm">
-        <el-row type="flex">
-          <el-col :span="23">
-            <el-form-item label="用户名" prop="userName">
-              <el-input v-model="registerFormData.userName"></el-input>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row type="flex">
-          <el-col :span="23">
-            <el-form-item prop="email" label="邮箱">
-              <el-input v-model="registerFormData.email"></el-input>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row type="flex">
-          <el-col :span="23">
-            <el-form-item prop="password" label="密码">
-              <el-input v-model="registerFormData.password"></el-input>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row type="flex">
-          <el-col :span="23">
-            <el-form-item label="头像">
-              <upload :picOk.sync='picOk' @getUploadRef="getUploadRef" @getFileData="getFileData" />
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row type="flex">
-          <el-col :span="20" :push="7">
-            <el-form-item>
-              <el-button type="primary" size="mini" @click="submitForm">立即注册</el-button>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row type="flex">
-          <el-col :span="18" style="font-size: 12px;margin-bottom: 15px;">
-							<p style="position: absolute;right: 0;">
-								已有账号？
-              	<router-link to="/login" tag="a" style="font-size: 14px;color: #11155d;">去登录</router-link>
-							</p>
-          </el-col>
-        </el-row>
-      </el-form>
-    </el-card>
+  <div class="register-container">
+    <div class="login">
+      <el-card shadow="hover">
+        <el-form :model="registerFormData" :rules="rules" label-width="70px" ref="loginForm">
+          <el-row type="flex">
+            <el-col :span="23">
+              <el-form-item label="用户名" prop="userName">
+                <el-input v-model="registerFormData.userName"></el-input>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row type="flex">
+            <el-col :span="23">
+              <el-form-item prop="email" label="邮箱">
+                <el-input v-model="registerFormData.email"></el-input>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row type="flex">
+            <el-col :span="23">
+              <el-form-item prop="password" label="密码">
+                <el-input v-model="registerFormData.password"></el-input>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row type="flex">
+            <el-col :span="23">
+              <el-form-item label="头像">
+                <upload :picOk.sync='picOk' @getUploadRef="getUploadRef" @getFileData="getFileData" />
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row type="flex">
+            <el-col :span="20" :push="7">
+              <el-form-item>
+                <el-button type="primary" size="mini" @click="submitForm">立即注册</el-button>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row type="flex">
+            <el-col :span="18" style="font-size: 12px;margin-bottom: 15px;">
+                <p style="position: absolute;right: 0;">
+                  已有账号？
+                  <router-link to="/login" tag="a" style="font-size: 14px;color: #11155d;">去登录</router-link>
+                </p>
+            </el-col>
+          </el-row>
+        </el-form>
+      </el-card>
+    </div>
   </div>
 </template>
 
 <script>
 import Upload from "@/components/Upload.vue"
-import { $loading } from '@/utils/tool.js'
 export default {
   name: "Login",
   components: {
@@ -92,7 +93,8 @@ export default {
         this.uploadRef.submit()
         if(!isOk) return this.$message({ type: 'error', message: '缺少必填项', center: true })
         if(!this.picOk) return this.$message({type: 'error', message: '头像图片错误', center: true})
-        let loading = $loading()
+        // this.registering = true
+        let loading = this.$loading({fullscreen: true, text: '账户注册中...', background: 'rgba(0, 0, 0, 0.5)'})
         let { userName, email, password } = this.registerFormData
         let url = '/api/users/register'
         this.formData.append('name', userName)
@@ -103,10 +105,13 @@ export default {
                 if(data.code === -1) return this.$message({ type: 'error', message: data.msg, center: true })
                 this.$message({
                   type: 'success',
-                  message: '注册成功,请登录',
+                  message: '注册成功(●"◡"●)',
                   center: true
                 })
-                this.$router.push('/login')
+                this.$router.push({
+                  name: 'login',
+                  params: email
+                })
                 loading.close()
               })
       })
@@ -122,10 +127,15 @@ export default {
 </script>
 
 <style lang='scss' scoped>
-.login {
-  width: 25%;
-  margin: 25vh auto;
-  position: relative;
-  padding-right: 20px;
+.register-container{
+    // border-top: 1px;
+    padding-top: 1px;
+    // overflow: hidden;
+  .login {
+    width: 25%;
+    margin: 25vh auto;
+    position: relative;
+    padding-right: 20px;
+  }
 }
 </style>

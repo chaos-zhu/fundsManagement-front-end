@@ -1,9 +1,9 @@
 import Vue from '@/main.js'
 import axios from 'axios'
-
+console.log('Current environment：' + process.env.NODE_ENV)
 let instance = axios.create({
-  //   baseURL: '/api',
-  //   timeout: 3000,
+  baseURL: process.env.NODE_ENV === 'development' ? '' : '/fm-management',
+  timeout: 3000,
   headers: {}
 })
 

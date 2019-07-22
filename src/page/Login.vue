@@ -38,6 +38,12 @@
         </el-form>
       </el-card>
     </div>
+    <!-- <el-dialog
+      title="提示"
+      :visible.sync="tipsShow"
+      width="30%">
+      <span>目前开发完成的功能有：注册、登录、资金记录的增加(支持附件上传与下载)、删除、条件查找、修改；其他功能陆续开发中。。。</span>
+    </el-dialog> -->
   </div>
 </template>
 
@@ -47,6 +53,7 @@ export default {
   name: "Login",
   data() {
     return {
+      tipsShow: true,
       loginFormData: {
         email: "",
         password: ""
@@ -68,7 +75,13 @@ export default {
     }
   },
   mounted() {
-    // this.$message({ type: 'info', message: `欢迎登录`, center: true })
+    // console.log(this.$route.params.needLogin)
+    if (this.$route.params.needLogin) {
+      this.$message({ type: 'info', message: `请先登录`, center: true })
+    }
+    if (this.$route.params.email) {
+      this.loginFormData.email = this.$route.params.email
+    }
   },
   methods: {
     submitForm() {
@@ -97,6 +110,9 @@ export default {
 
 <style lang='scss' scoped>
 .login-container{
+  // border-top: 1px;
+  // padding-top: 1px;
+  overflow: hidden;
 	.logo {
 		height: 100px;
 		text-align: center;

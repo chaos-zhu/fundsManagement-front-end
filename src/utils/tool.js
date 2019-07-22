@@ -1,7 +1,7 @@
-import Vue from '@/main.js'
-export function $loading (options = {fullscreen: true, text: '疯狂加载中...', background: 'rgba(0, 0, 0, 0.8)'}) {
-  return Vue.$loading.service(options)
-}
+// import Vue from '@/main.js'
+// export function $loading (options = {fullscreen: true, text: '疯狂加载中...', background: 'rgba(0, 0, 0, 0.8)'}) {
+//   return Vue.$loading.service(options)
+// }
 
 // 参数number为毫秒时间戳，必须是Number类型
 export function formatTime (ms) {

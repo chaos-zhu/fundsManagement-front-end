@@ -1,5 +1,4 @@
 import Vue from 'vue'
-// import that from '@/main.js'
 import Router from 'vue-router'
 // import store from '../store/'
 Vue.use(Router)
@@ -15,7 +14,7 @@ const NotFound = () => import('@/page/NotFound.vue')
 
 let router = new Router({
   mode: 'history',
-  // base: '/funds-management/',
+  base: '/funds-management/',
   routes: [
     {
       path: '/',
@@ -84,14 +83,21 @@ let router = new Router({
 })
 
 router.beforeEach((to, form, next) => {
-  // console.log(to.fullPath)
-  // console.log(localStorage.getItem('token'))
-  if (to.fullPath !== '/login' && to.fullPath !== '/register') { // 如果访问的不是登录页或者注册页，则不需要做登录校验，直接调用next()
+  // console.log(this) // this指向路由对象router
+  // console.log(vm) // undefined
+  // vm.$message({ type: 'info', message: `请先登录`, center: true }) // 在这里的vm为undefined, 所以报错
+  // console.log(to.path)
+  if (to.path !== '/login' && to.path !== '/register') { // 如果访问的不是登录页或者注册页，则不需要做登录校验，直接调用next()
     if (localStorage.getItem('token')) {
       next() // 如果存在token则证明是登录状态的(需要return，否则还会继续往下走)
     } else {
-      // that.$message({ type: 'info', message: `请先登录`, center: true })
-      next('/login') // 否则直接跳转到登录页
+      // 否则直接跳转到登录页，并标记请先登录
+      next({
+        name: 'login',
+        params: {
+          needLogin: true
+        }
+      })
     }
   } else {
     next()

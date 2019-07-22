@@ -1,6 +1,6 @@
 <template>
     <div>
-        开销趋势
+        开销趋势(开发中...)
     </div>
 </template>
 

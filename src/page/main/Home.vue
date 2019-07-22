@@ -3,10 +3,10 @@
     <div class="home">
       <h2 class="title" @click="handleTest">{{getUserInfo.name}} 欢迎使用XXXX系统</h2>
       <swiper :options="swiperOption" class="swiper-container">
-        <swiper-slide class="swiper-item"><img src="@/assets/img/01-min.jpg" alt="图片不见了"></swiper-slide>
-        <swiper-slide class="swiper-item"><img src="@/assets/img/02-min.jpg" alt="图片不见了"></swiper-slide>
-        <swiper-slide class="swiper-item"><img src="@/assets/img/03-min.jpg" alt="图片不见了"></swiper-slide>
-        <swiper-slide class="swiper-item"><img src="@/assets/img/04-min.jpg" alt="图片不见了"></swiper-slide>
+        <swiper-slide class="swiper-item"><img src="//qiniu.zhulijun.club/01-min.jpg" alt="图片不见了"></swiper-slide>
+        <swiper-slide class="swiper-item"><img src="//qiniu.zhulijun.club/02-min.jpg" alt="图片不见了"></swiper-slide>
+        <swiper-slide class="swiper-item"><img src="//qiniu.zhulijun.club/03-min.jpg" alt="图片不见了"></swiper-slide>
+        <swiper-slide class="swiper-item"><img src="//qiniu.zhulijun.club/04-min.jpg" alt="图片不见了"></swiper-slide>
         <div class="swiper-pagination" slot="pagination"></div>
       </swiper>
       <div class="hr"></div>

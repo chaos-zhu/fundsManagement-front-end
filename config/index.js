@@ -12,7 +12,7 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
       '/api': {
-        target: 'http://localhost:8000'
+        target: 'http://localhost:3003' // 3002 双数代表https，本地调试时使用http协议
       }
     },
 
@@ -50,16 +50,13 @@ module.exports = {
   build: {
     // Template for index.html
     index: path.resolve(__dirname, '../dist/index.html'),
-
     // Paths
     assetsRoot: path.resolve(__dirname, '../dist'),
     assetsSubDirectory: 'static',
-    assetsPublicPath: '/',
-
+    assetsPublicPath: './', // 上线后非根目录配置，之前为 /
     /**
      * Source Maps
      */
-
     productionSourceMap: false, // 生产环境js.map文件
     // https://webpack.js.org/configuration/devtool/#production
     devtool: '#source-map',
