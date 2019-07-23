@@ -23,8 +23,8 @@ let Store = new Vuex.Store({
       state.userInfo.name = newValue
       // }, 1000)
     },
-    setLoginStatus (state, status) {
-      state.isLogin = status
+    setUserInfo (state, userInfo) {
+      state.userInfo = userInfo
     }
   },
   actions: {

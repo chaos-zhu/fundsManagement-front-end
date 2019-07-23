@@ -5,8 +5,8 @@
         <el-form :model="registerFormData" :rules="rules" label-width="70px" ref="loginForm">
           <el-row type="flex">
             <el-col :span="23">
-              <el-form-item label="用户名" prop="userName">
-                <el-input v-model="registerFormData.userName"></el-input>
+              <el-form-item label="用户名" prop="name">
+                <el-input v-model="registerFormData.name"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
@@ -20,17 +20,17 @@
           <el-row type="flex">
             <el-col :span="23">
               <el-form-item prop="password" label="密码">
-                <el-input v-model="registerFormData.password"></el-input>
+                <el-input type='password' v-model="registerFormData.password"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
-          <el-row type="flex">
+          <!-- <el-row type="flex">
             <el-col :span="23">
               <el-form-item label="头像">
                 <upload :picOk.sync='picOk' @getUploadRef="getUploadRef" @getFileData="getFileData" />
               </el-form-item>
             </el-col>
-          </el-row>
+          </el-row> -->
           <el-row type="flex">
             <el-col :span="20" :push="7">
               <el-form-item>
@@ -53,55 +53,47 @@
 </template>
 
 <script>
-import Upload from "@/components/Upload.vue"
+// import Upload from "@/components/Upload.vue"
 export default {
-  name: "Login",
+  name: "Register",
   components: {
-    Upload
+    // Upload
   },
   data() {
     return {
-      formData: null,
-      uploadRef: null,
-      picOk: false,
+      // formData: null,
+      // uploadRef: null,
+      // picOk: false,
       registerFormData: {
-        userName: "",
+        name: "",
         email: "",
         password: "",
-        avatar: null
+        // avatar: null
       },
       rules: {
-        userName: [{ required: true, message: "请输入用户名", trigger: "blur" }, {min: 2, max: 5, message: '用户名长度在2到5位之间'}],
-        email: [
-          { required: true, message: "请输入邮箱地址", trigger: "blur" },
-          {
-            type: "email",
-            message: "请输入正确的邮箱地址",
-            trigger: ["blur", "change"]
-          }
-        ],
-        password: [
-          { required: true, message: "密码不能为空", trigger: "blur" },
-          { min: 6, max: 12, message: "密码长度在6~12位之间" }
-        ]
+        name: [{ required: true, message: "请输入用户名", trigger: "blur" }, {min: 2, max: 5, message: '用户名长度在2到5位之间'}],
+        email: [ { required: true, message: "请输入邮箱地址", trigger: "blur" }, { type: "email", message: "请输入正确的邮箱地址", trigger: ["blur", "change"] }],
+        password: [ { required: true, message: "密码不能为空", trigger: "blur" }, { min: 6, max: 12, message: "密码长度在6~12位之间" } ]
       }
     }
   },
   methods: {
     submitForm() {
       this.$refs.loginForm.validate(isOk => {
-        this.uploadRef.submit()
+        // this.uploadRef.submit()
         if(!isOk) return this.$message({ type: 'error', message: '缺少必填项', center: true })
-        if(!this.picOk) return this.$message({type: 'error', message: '头像图片错误', center: true})
-        // this.registering = true
+        // if(!this.picOk) return this.$message({type: 'error', message: '头像图片错误', center: true})
         let loading = this.$loading({fullscreen: true, text: '账户注册中...', background: 'rgba(0, 0, 0, 0.5)'})
-        let { userName, email, password } = this.registerFormData
+        let { name, email, password } = this.registerFormData
+        console.log(name, email, password)
         let url = '/api/users/register'
-        this.formData.append('name', userName)
-        this.formData.append('email', email)
-        this.formData.append('password', password)
-        this.$axios.post(url, this.formData)
+        // let formData = new FormData()
+        // formData.append('name', name)
+        // formData.append('email', email)
+        // formData.append('password', password)
+        this.$axios.post(url, this.registerFormData)
               .then(({data}) => {
+                loading.close()
                 if(data.code === -1) return this.$message({ type: 'error', message: data.msg, center: true })
                 this.$message({
                   type: 'success',
@@ -112,16 +104,15 @@ export default {
                   name: 'login',
                   params: email
                 })
-                loading.close()
               })
       })
     },
-    getUploadRef(ref) {
-      this.uploadRef = ref
-    },
-    getFileData(formData) {
-      this.formData = formData
-    }
+    // getUploadRef(ref) {
+    //   this.uploadRef = ref
+    // },
+    // getFileData(formData) {
+    //   this.formData = formData
+    // }
   }
 }
 </script>

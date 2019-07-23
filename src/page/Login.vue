@@ -99,7 +99,8 @@ export default {
               // this.$store.commit('setLoginStatus', true)
               let {userInfo, token } = data.data
 							localStorage.setItem('userInfo', JSON.stringify(userInfo))
-							localStorage.setItem('token', JSON.stringify(token))
+              localStorage.setItem('token', JSON.stringify(token))
+              this.$store.commit('setUserInfo', userInfo)
 							this.$router.push('/')
 						})
       })

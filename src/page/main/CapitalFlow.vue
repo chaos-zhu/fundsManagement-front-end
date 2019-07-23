@@ -111,15 +111,15 @@
       <el-table-column
         label="附件"
         align='center'
-        width="150">
+        width="120">
         <template slot-scope="scope">
-          <el-tooltip class="item" effect="dark" :content="scope.row.fileName ? scope.row.fileName.slice(14) : ''" placement="left">
+          <el-tooltip class="item" effect="dark" :content="scope.row.fileName" placement="left">
             <el-button v-if="scope.row.filePath" size="mini" type="info" @click="downloadFile(scope.row._id, scope.row.fileName)">下载</el-button>
           </el-tooltip>
             <span v-if="!scope.row.filePath" style="color: gray;">无</span>
         </template>
       </el-table-column>
-      <el-table-column label="操作" align='center' width="150">
+      <el-table-column label="操作" align='center' width="220">
         <template slot-scope="scope">
           <el-button
             size="mini"
@@ -205,7 +205,7 @@
       </el-form>
       <div slot="footer">
         <el-button size='small' @click="addFormVisible = false">取 消</el-button>
-        <el-button size='small' type="primary" @click="addRecord">确 定</el-button>
+        <el-button size='small' type="primary" @click="addRecord" v-loading='isAdding'>确 定</el-button>
       </div>
     </el-dialog>
 
@@ -270,6 +270,7 @@ export default {
     data () {
       return {
         loading: false,
+        isAdding: false,
         uploadLoading: false,
         addFormVisible: false,
         updateFormVisible: false,
@@ -374,7 +375,7 @@ export default {
       },
       // 文件超过限制则提示
       onExceed() {
-        this.$message({ type: 'error',  message: '失败：最多只能添加一张图片', center: true })
+        this.$message({ type: 'error',  message: '失败：最多只能添加一个附件', center: true })
       },
       // 自定义文件上传，调用this.$refs.upload.submit()方法即可触发，如未选择文件，此方法不会被触发
       request(option) {
@@ -386,6 +387,7 @@ export default {
       addRecord () {
         this.$refs.addForm.validate((isOk) => {
           if(!isOk) return this.$message({type: 'error', message: '新增失败!请填写表单', center: true})
+          this.isAdding = true
           this.$refs.upload.submit() // 调用自定义上传方法request
           let addForm = JSON.parse(JSON.stringify(this.addForm))
           let { type, mode, reason, explain } = addForm
@@ -411,9 +413,11 @@ export default {
                 explain: '',
                 file: ''
               }
+              this.isAdding = false
             })
             .catch((err) => {
               this.$message.error('新增失败:' + err)
+              this.isAdding = false
             })
         })
       },
@@ -491,10 +495,11 @@ export default {
         let url = '/api/funds/record'
         this.$axios.get(url, {params: option})
           .then(({data}) => {
-            if(data.code) return false // code为-1时后台代码出错
+            if(data.code) return // code为-1时后台代码出错
             let reasonArr = this.reasonArr[0].children.concat(this.reasonArr[1].children)
             data.data.list.forEach(item => {
               item.date = formatTime(Number(item.date)) // 处理日期
+              item.fileName = item.fileName ? item.fileName.slice(14) : ''
               this.typeArr.forEach((typeItme) => {
                 if(item.type === typeItme.value) item.type = typeItme.label
               })

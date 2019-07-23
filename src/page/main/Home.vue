@@ -1,12 +1,13 @@
 <template>
   <el-card>
     <div class="home">
-      <h2 class="title" @click="handleTest">{{getUserInfo.name}} 欢迎使用XXXX系统</h2>
+      <!-- <h2 class="title" @click="handleTest">{{getUserInfo.name}} 欢迎使用XXXX系统</h2> -->
+      <h2 class="title" @click="toQiniu">感谢七牛云提供存储服务</h2>
       <swiper :options="swiperOption" class="swiper-container">
-        <swiper-slide class="swiper-item"><img src="//qiniu.zhulijun.club/01-min.jpg" alt="图片不见了"></swiper-slide>
-        <swiper-slide class="swiper-item"><img src="//qiniu.zhulijun.club/02-min.jpg" alt="图片不见了"></swiper-slide>
-        <swiper-slide class="swiper-item"><img src="//qiniu.zhulijun.club/03-min.jpg" alt="图片不见了"></swiper-slide>
-        <swiper-slide class="swiper-item"><img src="//qiniu.zhulijun.club/04-min.jpg" alt="图片不见了"></swiper-slide>
+        <swiper-slide class="swiper-item"><img src="http://qiniu.zhulijun.club/qiniu/01-min.jpg" alt="七牛云外链错误"></swiper-slide>
+        <swiper-slide class="swiper-item"><img src="http://qiniu.zhulijun.club/qiniu/02-min.jpg" alt="七牛云外链错误"></swiper-slide>
+        <swiper-slide class="swiper-item"><img src="http://qiniu.zhulijun.club/qiniu/03-min.jpg" alt="七牛云外链错误"></swiper-slide>
+        <swiper-slide class="swiper-item"><img src="http://qiniu.zhulijun.club/qiniu/04-min.jpg" alt="七牛云外链错误"></swiper-slide>
         <div class="swiper-pagination" slot="pagination"></div>
       </swiper>
       <div class="hr"></div>
@@ -93,6 +94,9 @@ export default {
       // this.$store.commit('handleUserName', 123)
       // this.changeUserName(123, 456) // 第二个传值为undefined
       // this.handleUserName(123, 456)
+    },
+    toQiniu () {
+      window.open('https://portal.qiniu.com/signup?code=1hcfln0f8z0ia')
     }
   }
 };
@@ -107,6 +111,7 @@ export default {
     top: 30px;
     margin-left: 30px;
     font-size: 35px;
+    cursor: pointer;
     // font-style: oblique; // 下划线
     letter-spacing: 3px;
     text-shadow: 3px 3px 6px gray;

@@ -2,13 +2,13 @@
   <div class="header-container">
     <div class="logo">
       <img src="@/assets/logo.png" alt="logo不见了..." title="欢迎您~~~" />
-      <!-- <h2>个人资金管理系统</h2> -->
+      <h2>个人资金管理系统</h2>
     </div>
     <div class="info">
-      <img src="@/assets/logo.png" class="avatar" alt="头像不见了~~~" />
+      <img :src="getUserInfo.avatar" class="avatar" alt="请登录~" />
       <div class="user">
         <span>欢迎~</span>
-        <h2>{{ user.name }}</h2>
+        <h2 @click="$router.push('/account-settings')">{{ getUserInfo.name }}</h2>
       </div>
       <el-dropdown @command="handleCommand">
         <span class="el-dropdown-link">
@@ -24,15 +24,14 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 export default {
   name: "Header",
-  props: {
-    user: {
-      required: true,
-      type: Object
-    }
+  computed: {
+    ...mapGetters(['getUserInfo'])
   },
-  mounted() {},
+  mounted() {
+  },
   methods: {
     handleCommand(item) {
       switch (Number(item)) {
@@ -40,8 +39,9 @@ export default {
           this.$message("修改密码");
           break;
         case 1:
-          localStorage.removeItem("userInfo");
-          localStorage.removeItem("token");
+          // localStorage.removeItem("userInfo")
+          // localStorage.removeItem("token")
+          localStorage.clear() // 一部到位，清楚所有localStorage数据
           this.$message({
             type: "success",
             message: "已安全退出",
@@ -70,7 +70,7 @@ export default {
     align-items: center;
     img {
       margin: 0 20px;
-      width: 20%;
+      width: 15%;
       height: 85%;
     }
     h2 {
@@ -103,6 +103,7 @@ export default {
       h2 {
         font-size: 16px;
         color: blue;
+        cursor: pointer;
       }
     }
   }
