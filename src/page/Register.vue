@@ -85,7 +85,6 @@ export default {
         // if(!this.picOk) return this.$message({type: 'error', message: '头像图片错误', center: true})
         let loading = this.$loading({fullscreen: true, text: '账户注册中...', background: 'rgba(0, 0, 0, 0.5)'})
         let { name, email, password } = this.registerFormData
-        console.log(name, email, password)
         let url = '/api/users/register'
         // let formData = new FormData()
         // formData.append('name', name)

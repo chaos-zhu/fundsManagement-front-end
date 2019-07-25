@@ -413,6 +413,8 @@ export default {
                 explain: '',
                 file: ''
               }
+              // 去除列表中的文件
+              this.$refs.upload.clearFiles()
               this.isAdding = false
             })
             .catch((err) => {

@@ -23,7 +23,7 @@
         <i class="el-icon-setting"></i>
         <span slot="title">开销趋势</span>
       </el-menu-item>
-      <el-menu-item index="/account-settings">
+      <el-menu-item index="/account-setting">
         <i class="el-icon-setting"></i>
         <span slot="title">账户设置</span>
       </el-menu-item>

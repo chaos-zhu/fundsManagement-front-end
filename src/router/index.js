@@ -36,7 +36,7 @@ let router = new Router({
           }
         },
         {
-          path: '/account-settings',
+          path: '/account-setting',
           component: AccountSetting,
           meta: {
             requireAuth: true

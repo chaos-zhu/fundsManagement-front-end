@@ -8,14 +8,14 @@
       <img :src="getUserInfo.avatar" class="avatar" alt="请登录~" />
       <div class="user">
         <span>欢迎~</span>
-        <h2 @click="$router.push('/account-settings')">{{ getUserInfo.name }}</h2>
+        <h2 @click="$router.push('/account-setting')">{{ getUserInfo.name }}</h2>
       </div>
       <el-dropdown @command="handleCommand">
         <span class="el-dropdown-link">
           <i class="el-icon-arrow-down el-icon--right" style="color: white;"></i>
         </span>
         <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item command="0">修改密码</el-dropdown-item>
+          <el-dropdown-item command="0">个人中心</el-dropdown-item>
           <el-dropdown-item command="1">安全退出</el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
@@ -36,7 +36,7 @@ export default {
     handleCommand(item) {
       switch (Number(item)) {
         case 0:
-          this.$message("修改密码");
+          this.$router.push('/account-setting')
           break;
         case 1:
           // localStorage.removeItem("userInfo")

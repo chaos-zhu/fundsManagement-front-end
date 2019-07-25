@@ -30,9 +30,9 @@ let Store = new Vuex.Store({
   actions: {
     changeUserName (context, newValue) { // context: 上下文
       setTimeout(() => {
-        console.log(context, newValue)
+        // console.log(context, newValue)
         context.commit('handleUserName', newValue)
-      }, 1000)
+      }, 500)
     }
   }
 
