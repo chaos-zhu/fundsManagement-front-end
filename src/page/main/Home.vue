@@ -40,9 +40,9 @@
               ④使用element-ui作为项目系统基础UI框架<br><br>
               ⑤使用swiper组件达到首页公告轮播展示效果<br><br>
               ⑥使用路由懒加载提高首屏打开速度<br><br>
-              ⑦使用Echarts动态展示图表<br><br>
+              ⑦用Echarts作为项目图表功能展示<br><br>
               ⑧使用history路由模式并支持线上刷新<br><br>
-              ⑨使用使用moment.js处理Date类型的转换<br><br>
+              ⑨使用moment.js处理Date类型的转换<br><br>
               <!-- ⑩<br><br> -->
               
               </p>

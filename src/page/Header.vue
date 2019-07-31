@@ -2,7 +2,7 @@
   <div class="header-container">
     <div class="logo">
       <img src="@/assets/logo.png" alt="logo不见了..." title="欢迎您~~~" />
-      <h2>个人资金管理系统</h2>
+      <!-- <h2>个人资金管理系统</h2> -->
     </div>
     <div class="info">
       <img :src="getUserInfo.avatar" class="avatar" alt="请登录~" />
@@ -41,7 +41,8 @@ export default {
         case 1:
           // localStorage.removeItem("userInfo")
           // localStorage.removeItem("token")
-          localStorage.clear() // 一部到位，清楚所有localStorage数据
+          localStorage.clear() // 一步到位，清楚所有localStorage数据
+          sessionStorage.clear() // 一步到位，清楚所有sessionStorage数据
           this.$message({
             type: "success",
             message: "已安全退出",
@@ -70,8 +71,7 @@ export default {
     align-items: center;
     img {
       margin: 0 20px;
-      width: 15%;
-      height: 85%;
+      height: 80%;
     }
     h2 {
       color: white;
@@ -83,12 +83,12 @@ export default {
   .info {
     margin-right: 6vh;
     height: 100%;
-    width: 28vh;
+    width: 180px;
     display: flex;
     align-items: center;
     justify-content: space-around;
     .avatar {
-      width: 20%;
+      width: 25%;
       border-radius: 50%;
       overflow: hidden;
     }

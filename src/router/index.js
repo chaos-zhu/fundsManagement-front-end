@@ -88,7 +88,7 @@ router.beforeEach((to, form, next) => {
   // vm.$message({ type: 'info', message: `请先登录`, center: true }) // 在这里的vm为undefined, 所以报错
   // console.log(to.path)
   if (to.path !== '/login' && to.path !== '/register') { // 如果访问的不是登录页或者注册页，则不需要做登录校验，直接调用next()
-    if (localStorage.getItem('token')) {
+    if (sessionStorage.getItem('token')) {
       next() // 如果存在token则证明是登录状态的(需要return，否则还会继续往下走)
     } else {
       // 否则直接跳转到登录页，并标记请先登录

@@ -97,9 +97,11 @@ export default {
 					this.$message.success({center: true, message: data.msg})
 					this.dialogName = false
 					this.$store.dispatch('changeUserName', this.name)
-					let userInfo = JSON.parse(localStorage.getItem('userInfo'))
+					// let userInfo = JSON.parse(localStorage.getItem('userInfo'))
+					let userInfo = JSON.parse(sessionStorage.getItem('userInfo'))
 					userInfo.name = this.name
-					localStorage.setItem('userInfo', JSON.stringify(userInfo))
+					// localStorage.setItem('userInfo', JSON.stringify(userInfo))
+					sessionStorage.setItem('userInfo', JSON.stringify(userInfo))
 				})
 				.catch((err) => {
 					this.$message.error({center: true, message: err})

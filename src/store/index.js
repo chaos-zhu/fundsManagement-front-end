@@ -4,7 +4,8 @@ Vue.use(Vuex)
 
 let Store = new Vuex.Store({
   state: { // 仓库
-    userInfo: localStorage.getItem('userInfo') ? JSON.parse(localStorage.getItem('userInfo')) : {},
+    // userInfo: localStorage.getItem('userInfo') ? JSON.parse(localStorage.getItem('userInfo')) : {},
+    userInfo: sessionStorage.getItem('userInfo') ? JSON.parse(sessionStorage.getItem('userInfo')) : {},
     // isLogin: false
   },
   getters: { // 监听state里面某个属性的变化，类似computed属性

@@ -8,7 +8,7 @@ let instance = axios.create({
 })
 
 instance.interceptors.request.use((config) => {
-  let token = localStorage.token
+  let token = sessionStorage.token
   config.headers['T-Access-Token'] = token ? token.substring(1, token.length - 1) : null // 坑：后台接收到的token字符串带双引号的，前端可以处理下，直接去掉
   return config // 必须return配置
 })
