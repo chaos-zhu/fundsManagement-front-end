@@ -534,6 +534,8 @@ export default {
             link.click()
             window.URL.revokeObjectURL(contentUrl)
           })
+          // 记录下post请求解决方案
+          // this.$axios({ method: 'post', url, responseType: 'blob', data: {fileName: 'test.txt'}})
       },
       // 换页
       handleCurrentChange (pageNum) {
