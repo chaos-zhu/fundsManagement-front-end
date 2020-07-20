@@ -3,7 +3,7 @@ import axios from 'axios'
 console.log('Current environment：' + process.env.NODE_ENV)
 let instance = axios.create({
   baseURL: process.env.NODE_ENV === 'development' ? '' : '/fm-management',
-  timeout: 3000,
+  timeout: 15000,
   headers: {}
 })
 

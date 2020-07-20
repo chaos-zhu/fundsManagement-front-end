@@ -529,7 +529,8 @@ export default {
             let link = document.createElement('a')
             link.style.display = 'none'
             link.href = contentUrl
-            link.setAttribute('download', fileName.slice(14)) // 文件名称
+            console.log(fileName)
+            link.setAttribute('download', fileName) // 文件名称
             document.body.appendChild(link)
             link.click()
             window.URL.revokeObjectURL(contentUrl)
