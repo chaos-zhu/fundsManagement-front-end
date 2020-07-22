@@ -1,9 +1,9 @@
 <template>
   <div :class="['navmenu-container', {'hide-nav-menu': !navSwitch}]">
-    <div class="navmenu-switch" @click="handleNavSwitch">
+    <!-- <div class="navmenu-switch" @click="handleNavSwitch">
       <i :class="{'el-icon-d-arrow-left': navSwitch}"></i>
       <i :class="{'el-icon-d-arrow-right': !navSwitch}"></i>
-    </div>
+    </div> -->
     <el-menu
       :default-active="getPath"
       class="el-menu-vertical-demo"
@@ -85,7 +85,7 @@ export default {
 
 <style lang="scss" scope>
 .navmenu-container {
-  width: 10%;
+  width: 190px;
   height: calc(100vh - 72px);
   background-color: #2d374f;
   opacity: 0.93;

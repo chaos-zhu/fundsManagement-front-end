@@ -173,7 +173,8 @@ export default {
     width: 30%;
     margin: 0 auto;
     button {
-      width: 60%;
+      height: 45px;
+      width: 250px;
       cursor: pointer;
       position: relative;
       display: block;

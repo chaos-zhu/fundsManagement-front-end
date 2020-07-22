@@ -1,15 +1,18 @@
 <template>
   <div id="index">
+    <!-- 头部 -->
     <Header :user='getUserInfo'/>
+    <!-- 左边导航 -->
     <NavMenu :navStatus.sync='navStatus'/>
-      <div :class="['right-box', {'cancel-margin-left': !navStatus}]">
-        <transition
-          appear
-          mode="out-in"
-          name="el-fade-in" >
-            <router-view />
-        </transition>
-      </div>
+    <!-- 右边栏 -->
+    <div :class="['right-box', {'cancel-margin-left': !navStatus}]">
+      <transition
+        appear
+        mode="out-in"
+        name="el-fade-in" >
+          <router-view />
+      </transition>
+    </div>
   </div>
 </template>
 

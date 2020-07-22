@@ -71,7 +71,7 @@ export default {
   data() {
     return {
       swiperOption: {
-        direction: "vertical",
+        // direction: "vertical",
         mousewheel: true,
 				loop: true,
 				autoplay: true,
@@ -123,7 +123,7 @@ export default {
     margin-top: 120px;
     margin-right: 15px;
     width: 60%;
-    height: 50vh;
+    height: 340px;
     float: left;
     .swiper-item{
         img{
@@ -133,7 +133,7 @@ export default {
     }
     .swiper-pagination{
         position: absolute;
-        top: 50px;
+        // top: 50px;
     }
   }
 	.hr{

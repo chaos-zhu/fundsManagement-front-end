@@ -1,58 +1,45 @@
 <template>
   <el-card >
     <!-- 搜索 -->
-    <el-form :inline="true" :model="searchForm" class="demo-form-inline" size='small'>
-      <el-row>
-        <el-col :span="5">
-          <el-form-item label="收支类型">
-            <el-select v-model="searchForm.type" placeholder="请选择收支类型" clearable>
-              <el-option v-for="item in typeArr" :key="item.value" :label="item.label" :value="item.value"></el-option>
-            </el-select>
-          </el-form-item>
-        </el-col>
-        <el-col :span="5">
-          <el-form-item label="收支方式">
-            <el-select v-model="searchForm.mode" placeholder="请选择收支方式" clearable>
-              <el-option v-for="item in modeArr" :key="item.value" :label="item.label" :value="item.value"></el-option>
-            </el-select>
-          </el-form-item>
-        </el-col>
-        <el-col :span="5">
-          <el-form-item label="收支原因">
-            <el-cascader
-              v-model="searchForm.reason"
-              clearable
-              :options="reasonArr"
-              :props="{ expandTrigger: 'hover' }">
-            </el-cascader>
-          </el-form-item>
-        </el-col>
-        <el-col :span="8">
-          <el-form-item label="日期区间">
-            <el-date-picker
-              :editable="false"
-              v-model="searchForm.date"
-              type="datetimerange"
-              placeholder="请选择一个时间段"
-              style="width: 80%;"
-              :picker-options="pickerOptions">
-            </el-date-picker>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="5">
-          <el-form-item label="备注说明">
-            <el-input v-model="searchForm.explain" placeholder="支持模糊查询" clearable @keyup.enter.native="handleSearch"></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :span="5">
-          <el-form-item>
-            <el-button type="primary" size='mini' @click="handleSearch">查询</el-button>
-            <el-button size='mini' type="success" @click="addFormVisible = true">新增记录</el-button>
-          </el-form-item>
-        </el-col>
-      </el-row>
+    <el-form :inline="true" :model="searchForm" label-width="100px" class="demo-form-inline" size='small'>
+      <el-form-item label="收支类型">
+        <el-select v-model="searchForm.type" placeholder="请选择收支类型" clearable class="search-form-item">
+          <el-option v-for="item in typeArr" :key="item.value" :label="item.label" :value="item.value"></el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item label="收支方式">
+        <el-select v-model="searchForm.mode" placeholder="请选择收支方式" clearable class="search-form-item">
+          <el-option v-for="item in modeArr" :key="item.value" :label="item.label" :value="item.value"></el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item label="收支原因">
+        <el-cascader
+          class="search-form-item"
+          v-model="searchForm.reason"
+          clearable
+          :options="reasonArr"
+          :props="{ expandTrigger: 'hover' }">
+        </el-cascader>
+      </el-form-item>
+      <el-form-item label="备注说明">
+        <el-input v-model="searchForm.explain" class="search-form-item" placeholder="支持模糊查询" clearable @keyup.enter.native="handleSearch"></el-input>
+      </el-form-item>
+      <br>
+      <el-form-item label="日期区间">
+        <el-date-picker
+          class="search-form-item"
+          :editable="false"
+          v-model="searchForm.date"
+          type="datetimerange"
+          placeholder="请选择一个时间段"
+          style="width: 80%;"
+          :picker-options="pickerOptions">
+        </el-date-picker>
+      </el-form-item>
+      <el-form-item>
+        <el-button type="primary" size='mini' @click="handleSearch">查询</el-button>
+        <el-button size='mini' type="success" @click="addFormVisible = true">新增记录</el-button>
+      </el-form-item>
     </el-form>
     <!-- 表格 -->
     <el-table
@@ -143,12 +130,12 @@
     </el-pagination>
 
     <!-- 新增 -->
-    <el-dialog title="新增资金记录" :visible.sync="addFormVisible" :close-on-click-modal="false" width='30%'>
+    <el-dialog title="新增资金记录" :visible.sync="addFormVisible" :close-on-click-modal="false">
       <el-form :model="addForm" ref="addForm" :rules="rules" size='small' label-width="80px" >
         <el-row type="flex">
           <el-col :span="24">
             <el-form-item label="收支类型" prop='type'>
-              <el-select v-model="addForm.type" placeholder="请选择收支类型">
+              <el-select v-model="addForm.type" placeholder="请选择收支类型" class="add-form-item">
                 <el-option v-for="item in typeArr" :key="item.value" :label="item.label" :value="item.value"></el-option>
               </el-select>
             </el-form-item>
@@ -157,7 +144,7 @@
         <el-row>
           <el-col :span="24">
             <el-form-item label="收支方式" prop='mode'>
-              <el-select v-model="addForm.mode" placeholder="请选择收支方式">
+              <el-select v-model="addForm.mode" placeholder="请选择收支方式" class="add-form-item">
                 <el-option v-for="item in modeArr" :key="item.value" :label="item.label" :value="item.value"></el-option>
               </el-select>
             </el-form-item>
@@ -167,6 +154,7 @@
           <el-col :span="24">
             <el-form-item label="收支原因"  prop='reason'>
               <el-cascader
+                class="add-form-item"
                 v-model="addForm.reason"
                 :options="reasonArr"
                 :props="{ expandTrigger: 'hover' }">
@@ -177,7 +165,7 @@
         <el-row>
           <el-col :span="24">
             <el-form-item label="备注说明">
-              <el-input type="textarea" style="width: 50%;" v-model="addForm.explain" :autosize="{ minRows: 5, maxRows: 8}" placeholder="请输入此次支出或收入详细的描述"></el-input>
+              <el-input type="textarea" class="add-form-item" v-model="addForm.explain" :autosize="{ minRows: 5, maxRows: 8}" placeholder="请输入此次支出或收入详细的描述"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -534,6 +522,7 @@ export default {
             document.body.appendChild(link)
             link.click()
             window.URL.revokeObjectURL(contentUrl)
+            this.$message.success('下载成功!')
           })
           // 记录下post请求解决方案
           // this.$axios({ method: 'post', url, responseType: 'blob', data: {fileName: 'test.txt'}})
@@ -580,5 +569,11 @@ export default {
 .pagination{
   float: right;
   margin: 30px;
+}
+.search-form-item {
+  width: 180px;
+}
+.add-form-item {
+  width: 80%;
 }
 </style>

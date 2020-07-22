@@ -2,12 +2,12 @@
   <div class="header-container">
     <div class="logo">
       <img src="@/assets/logo.png" alt="logo不见了..." title="欢迎您~~~" />
-      <!-- <h2>个人资金管理系统</h2> -->
+      <h2>个人资金管理系统</h2>
     </div>
     <div class="info">
       <img :src="getUserInfo.avatar" class="avatar" alt="请登录~" />
       <div class="user">
-        <span>欢迎~</span>
+        <span>欢迎使用😊</span>
         <h2 @click="$router.push('/account-setting')">{{ getUserInfo.name }}</h2>
       </div>
       <el-dropdown @command="handleCommand">
@@ -81,7 +81,7 @@ export default {
     }
   }
   .info {
-    margin-right: 6vh;
+    margin-right: 50px;
     height: 100%;
     width: 180px;
     display: flex;
@@ -102,8 +102,11 @@ export default {
       }
       h2 {
         font-size: 16px;
-        color: blue;
+        color: rgb(0, 255, 255);
         cursor: pointer;
+        &:hover{
+          color: rgb(255, 208, 75);
+        }
       }
     }
   }
