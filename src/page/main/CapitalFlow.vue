@@ -101,7 +101,7 @@
         width="120">
         <template slot-scope="scope">
           <el-tooltip class="item" effect="dark" :content="scope.row.fileName" placement="left">
-            <el-button v-if="scope.row.filePath" size="mini" type="info" @click="downloadFile(scope.row._id, scope.row.fileName)">下载</el-button>
+            <el-button v-if="scope.row.filePath" size="mini" type="info" :loading="scope.row.downloadLoading" @click="downloadFile(scope.row._id, scope.row.fileName, scope.row)">下载</el-button>
           </el-tooltip>
             <span v-if="!scope.row.filePath" style="color: gray;">无</span>
         </template>
@@ -500,6 +500,7 @@ export default {
                 if(item.reason === reasonItme.value) item.reason = reasonItme.label
               })
             })
+            data.data.list.forEach(item => item.downloadLoading = false)
             this.recordList = data.data.list
             this.totalNum = data.data.total
             this.loading = false
@@ -509,7 +510,8 @@ export default {
           })
       },
       // 处理文件下载
-      downloadFile (id, fileName) {
+      downloadFile (id, fileName, row) {
+        row.downloadLoading = true
         let url = `/api/funds/recordFile`
         this.$axios.get(url, { params: {id}, responseType: "arraybuffer"} ) // 指定响应类型：arraybuffer或blob（这里两种都可以使用，原因未知，路过的大佬求告知），如果不写下载的文件会乱码
           .then(({data}) => {
@@ -523,6 +525,9 @@ export default {
             link.click()
             window.URL.revokeObjectURL(contentUrl)
             this.$message.success('下载成功!')
+          })
+          .finally(() => {
+            row.downloadLoading = false
           })
           // 记录下post请求解决方案
           // this.$axios({ method: 'post', url, responseType: 'blob', data: {fileName: 'test.txt'}})
