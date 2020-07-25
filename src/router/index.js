@@ -14,7 +14,7 @@ const NotFound = () => import('@/page/NotFound.vue')
 
 let router = new Router({
   mode: 'history',
-  base: '/funds-management/',
+  // base: '/funds-management/',
   routes: [
     {
       path: '/',
